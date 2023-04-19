@@ -11,7 +11,6 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { Public } from './decorators/public.decorator';
-import { PhoneConfirmationService } from 'src/phone-confirmation/phone-confirmation.service';
 import { LoginGoogleDto } from './dto/login-google.dto';
 import { LoginFacebookDto } from './dto/login-facebook.dto';
 import { GoogleOauthGuard } from './guards/googleToken.guard';
@@ -25,6 +24,7 @@ import { StudentDocument } from 'src/users/models/student.model';
 import { FilterQuery } from 'mongoose';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserRepository } from 'src/users/users.repository';
+import { EmailConfirmationService } from 'src/email-confirmation/email-confirmation.service';
 
 @ApiTags('AUTH')
 @Controller('auth')
@@ -32,7 +32,9 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userRepository: UserRepository,
-    private readonly phoneConfirmationService: PhoneConfirmationService,
+
+    private readonly emailConfirmationService: EmailConfirmationService,
+
     @Inject(REQUEST) private readonly req: Record<string, unknown>,
   ) {}
 
@@ -40,8 +42,8 @@ export class AuthController {
   @Post('/signup')
   async register(@Body() RegisterDto: RegisterDto): Promise<StudentDocument> {
     let user = await this.authService.register(RegisterDto);
-    await this.phoneConfirmationService.sendSMS({
-      phone: RegisterDto.phone,
+    await this.emailConfirmationService.sendSMS({
+      email: RegisterDto.email,
     });
     return user;
   }
@@ -77,10 +79,10 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('/check-code-to-reset')
   async checkCodeToReset(
-    @Body() { phone, code }: CheckCodeToResetDto,
+    @Body() { email, code }: CheckCodeToResetDto,
   ): Promise<void> {
-    return await this.phoneConfirmationService.verificationCode({
-      phone,
+    return await this.emailConfirmationService.verificationCode({
+      email,
       code,
     });
   }
@@ -89,11 +91,11 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('reset-password')
   async resetPassword(
-    @Body() { phone, code, password }: ResetPasswordDto,
+    @Body() { email, code, password }: ResetPasswordDto,
   ): Promise<UserDocument> {
-    await this.phoneConfirmationService.verificationCode({ phone, code });
+    await this.emailConfirmationService.verificationCode({ email, code });
     return await this.userRepository.updateOne(
-      { phone } as FilterQuery<UserDocument>,
+      { email } as FilterQuery<UserDocument>,
       { password } as UpdateUserDto,
     );
   }

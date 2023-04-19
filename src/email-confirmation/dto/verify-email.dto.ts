@@ -1,10 +1,10 @@
 import { IsNotEmpty, IsOptional, IsString, Matches } from 'class-validator';
 import { Constants } from 'src/utils/constants';
 
-export class VerifyPhoneDto {
+export class VerifyEmailDto {
   @IsString()
-  @Matches(Constants.PHONE_REGX, { message: 'phone is invalid' })
-  phone: string;
+  @Matches(Constants.EMAIL_REGX, { message: 'Email is invalid' })
+  email: string;
 
   @IsString()
   @IsNotEmpty()

@@ -16,6 +16,6 @@ export class RegisterDto {
   password: string;
 
   @IsString()
-  @Matches(Constants.PHONE_REGX, { message: 'phone is invalid' })
-  phone: string;
+  @Matches(Constants.EMAIL_REGX, { message: 'email is invalid' })
+  email: string;
 }

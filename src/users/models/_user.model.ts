@@ -95,6 +95,9 @@ export class User {
   @Prop({ required: true, type: String, enum: Object.values(UserRole) })
   role: UserRole;
 
+  @Prop({ type: String })
+  code?: string;
+
   @Prop(
     raw([
       {

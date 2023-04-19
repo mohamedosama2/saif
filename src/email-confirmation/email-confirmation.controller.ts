@@ -9,9 +9,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { PhoneConfirmationService } from './phone-confirmation.service';
-import { CreatePhoneConfirmationDto } from './dto/create-phone-confirmation.dto';
-import { VerifyPhoneDto } from './dto/verify-phone.dto';
+
 import { Public } from 'src/auth/decorators/public.decorator';
 import { UsersService } from 'src/users/users.service';
 import { UpdateUserDto } from 'src/users/dto/update-user.dto';
@@ -20,13 +18,16 @@ import { User, UserDocument } from 'src/users/models/_user.model';
 import { FilterQuery } from 'mongoose';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserRepository } from 'src/users/users.repository';
+import { EmailConfirmationService } from './email-confirmation.service';
+import { CreateEmailConfirmationDto } from './dto/create-email-confirmation.dto';
+import { VerifyEmailDto } from './dto/verify-email.dto';
 
 @ApiBearerAuth()
-@ApiTags('PHONE-CONFIRMATION')
-@Controller('phone-confirmation')
-export class PhoneConfirmationController {
+@ApiTags('EMAIL-CONFIRMATION')
+@Controller('Email-confirmation')
+export class EmailConfirmationController {
   constructor(
-    private readonly phoneConfirmationService: PhoneConfirmationService,
+    private readonly emailConfirmationService: EmailConfirmationService,
     private readonly userRepository: UserRepository,
   ) {}
 
@@ -34,10 +35,10 @@ export class PhoneConfirmationController {
   @HttpCode(HttpStatus.OK)
   @Post()
   async sendSMS(
-    @Body() createPhoneConfirmationDto: CreatePhoneConfirmationDto,
-  ): Promise<VerificationInstance> {
-    return await this.phoneConfirmationService.sendSMS(
-      createPhoneConfirmationDto,
+    @Body() createEmailConfirmationDto: CreateEmailConfirmationDto,
+  ): Promise<string> {
+    return await this.emailConfirmationService.sendSMS(
+      createEmailConfirmationDto,
     );
   }
 
@@ -45,11 +46,11 @@ export class PhoneConfirmationController {
   @HttpCode(HttpStatus.OK)
   @Post('verify')
   async verificationCode(
-    @Body() verifyData: VerifyPhoneDto,
+    @Body() verifyData: VerifyEmailDto,
   ): Promise<UserDocument> {
-    await this.phoneConfirmationService.verificationCode(verifyData);
+    await this.emailConfirmationService.verificationCode(verifyData);
     return await this.userRepository.updateOne(
-      { phone: verifyData.phone } as FilterQuery<UserDocument>,
+      { email: verifyData.email } as FilterQuery<UserDocument>,
       { enabled: true } as UpdateUserDto,
     );
   }
