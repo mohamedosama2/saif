@@ -10,6 +10,8 @@ import { FilterQueryOptionsReservation } from './dto/filterQueryOptions.dto';
 import { HouseRepository } from 'src/houses/house.repository';
 import { ApiNotFoundResponse } from '@nestjs/swagger';
 import { ReservationNotificationRepository } from './repositaries/reservationsNotifications.repository';
+import { IS_RESERVED, ReservationDocument } from './models/reservation.model';
+import { HouseDocument } from 'src/houses/models/house.model';
 
 @Injectable()
 export class ReservationsService {
@@ -25,10 +27,15 @@ export class ReservationsService {
       end_date: { $gte: createReservationDto.start_date },
     });
 
-    if (isReserved)
-      throw new BadRequestException(
+    if (isReserved) {
+      return await this.reservationRepostary.create({
+        ...createReservationDto,
+        isReserved: IS_RESERVED.WAITING,
+      });
+    }
+    /*  throw new BadRequestException(
         `this house is reserved from ${isReserved.start_date} to ${isReserved.end_date} `,
-      );
+      ); */
     let reservation = await this.reservationRepostary.create(
       createReservationDto,
     );
@@ -52,10 +59,49 @@ export class ReservationsService {
     return reservation;
   }
 
+  async hasWaitingReservation(reservation: ReservationDocument, owner: string) {
+    //update resrevation
+    const existedReservation = await this.reservationRepostary.findOne({
+      house: reservation.house,
+      isReserved: IS_RESERVED.WAITING,
+    });
+    if (existedReservation) {
+      let newReservation = await this.reservationRepostary.create({
+        start_date: existedReservation.start_date,
+        end_date: existedReservation.end_date,
+        price: existedReservation.price,
+        house: existedReservation.house,
+        user: existedReservation.user,
+        payment_method: existedReservation.payment_method,
+      });
+      await this.reservationRepostary.deleteOne({ _id: existedReservation });
+      await this.houseRepository.updateOneVoid(
+        { _id: existedReservation.house },
+        { $addToSet: { reservations: newReservation._id } as any },
+      );
+
+      //make  resrevation notification
+      await this.reservationNotificationRepository.create({
+        start_date: existedReservation.start_date,
+        end_date: existedReservation.end_date,
+        owner: owner,
+        house: existedReservation.house,
+        event: 'NEW RESERVATION',
+      });
+    }
+  }
+
+  // still case of sel waiting reservation
+
   async removeReservation(reservationId: string) {
     let reservation = await this.reservationRepostary.findOne({
       _id: reservationId,
     });
+    if (!reservation) throw new NotFoundException('not found this reservation');
+    if (reservation.isReserved === IS_RESERVED.WAITING) {
+      return await this.reservationRepostary.deleteOne({ _id: reservationId });
+    }
+    ////////////////WHERE
     let house = await this.houseRepository.findOne({
       reservations: reservationId,
     });
@@ -74,6 +120,8 @@ export class ReservationsService {
       house: house._id,
       event: 'DELETED RESERVATION',
     });
+    await this.hasWaitingReservation(reservation, house.owner);
+
     return 'SUUCESS';
   }
 
@@ -122,5 +170,4 @@ export class ReservationsService {
   findMostReserved() {
     return this.reservationRepostary.findMostReserved();
   }
-
 }

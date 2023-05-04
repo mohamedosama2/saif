@@ -5,6 +5,7 @@ import { User } from 'src/users/models/_user.model';
 
 export type HouseDocument = House & mongoose.Document;
 
+
 @Schema({ timestamps: true })
 export class House {
   id?: string;

@@ -31,5 +31,6 @@ import { ReservationNotificationRepository } from './repositaries/reservationsNo
     ]),
     forwardRef(() => HousesModule),
   ],
+  exports: [ReservationsService],
 })
 export class ReservationsModule {}

@@ -39,18 +39,22 @@ export class HousesService {
     let filters = [];
     if (queryFiltersAndOptions.city)
       filters = [...filters, { $match: { city: queryFiltersAndOptions.city } }];
-    if (
-      queryFiltersAndOptions.minimum_price &&
-      queryFiltersAndOptions.highest_price
-    ) {
+    if (queryFiltersAndOptions.minimum_price) {
       filters = [
         ...filters,
         {
           $match: {
-            $and: [
-              { price: { $lte: queryFiltersAndOptions.highest_price } },
-              { price: { $gte: queryFiltersAndOptions.minimum_price } },
-            ],
+            $and: [{ price: { $gte: queryFiltersAndOptions.minimum_price } }],
+          },
+        },
+      ];
+    }
+    if (queryFiltersAndOptions.highest_price) {
+      filters = [
+        ...filters,
+        {
+          $match: {
+            $and: [{ price: { $lte: queryFiltersAndOptions.highest_price } }],
           },
         },
       ];

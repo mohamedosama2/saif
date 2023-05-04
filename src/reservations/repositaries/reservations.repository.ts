@@ -14,13 +14,13 @@ export class ReservationRepository extends BaseAbstractRepository<Reservation> {
   }
   async allReservationOfHouse(house: string) {
     return await this.reservationModel
-      .find({ house }, { start_date: 1, end_date: 1, house: 1 })
+      .find({ house }, { start_date: 1, end_date: 1, house: 1, isReserved: 1 })
       .populate('house');
   }
 
   async myReservations(user: string) {
     return await this.reservationModel
-      .find({ user }, { start_date: 1, end_date: 1, house: 1 })
+      .find({ user }, { start_date: 1, end_date: 1, house: 1, isReserved: 1 })
       .populate('house');
   }
 

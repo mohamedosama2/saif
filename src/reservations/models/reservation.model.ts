@@ -1,13 +1,21 @@
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { House } from 'src/houses/models/house.model';
+
 import { User } from 'src/users/models/_user.model';
+
+@Schema()
+export class House {}
 
 export type ReservationDocument = Reservation & mongoose.Document;
 
 export enum PAYMENT_METHOD {
   CASH = 'CASH',
   PAYPAL = 'PAYPAL',
+}
+
+export enum IS_RESERVED {
+  FIRST = 'FIREST',
+  WAITING = 'WAITING',
 }
 
 @Schema({
@@ -32,13 +40,20 @@ export class Reservation {
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref:'houses',
+    ref: House.name,
     required: true,
   })
   house: string;
 
   @Prop({ type: Number, required: true })
   price: number;
+
+  @Prop({
+    type: String,
+    default: IS_RESERVED.FIRST,
+    enum: Object.values(IS_RESERVED),
+  })
+  isReserved?: IS_RESERVED;
 }
 const ReservationSchema = SchemaFactory.createForClass(Reservation);
 export { ReservationSchema };
