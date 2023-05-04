@@ -57,7 +57,7 @@ export class AuthController {
   }> {
     return await this.authService.login(LoginDto);
   }
-
+/* 
   @Public()
   @UseGuards(GoogleOauthGuard)
   @Post('/login-googel')
@@ -73,7 +73,7 @@ export class AuthController {
     @Body() { accessToken }: LoginFacebookDto,
   ): Promise<UserDocument> {
     return await this.authService.loginFacebook({ accessToken });
-  }
+  } */
 
   @Public()
   @HttpCode(HttpStatus.OK)
