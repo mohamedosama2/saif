@@ -50,6 +50,6 @@ async function bootstrap() {
     extraModels: [PaginatedDto, User, FilterQueryOptionsUser, ParamsWithId],
   });
   SwaggerModule.setup('api', app, document, customOptions);
-  await app.listen(process.env.PORT);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();

@@ -12,6 +12,8 @@ import { cacheOperationsModule } from './cache/cache.module';
 import { NotificationModule } from './notification/notification.module';
 import { ChangeStreamsModule } from './change-streams/change-streams.module';
 import { EmailConfirmationModule } from './email-confirmation/email-confirmation.module';
+import { HousesModule } from './houses/houses.module';
+import { ReservationsModule } from './reservations/reservations.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -19,6 +21,8 @@ import { EmailConfirmationModule } from './email-confirmation/email-confirmation
     UsersModule,
     AuthModule,
     EmailConfirmationModule,
+    HousesModule,
+    ReservationsModule,
     /*  ChatModule,
     NotificationModule, */
     // ChangeStreamsModule,
