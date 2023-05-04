@@ -1,2 +1,0 @@
-[install]
-cmd = 'npm install --force'
