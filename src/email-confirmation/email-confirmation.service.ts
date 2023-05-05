@@ -22,7 +22,7 @@ export class EmailConfirmationService {
     try {
       await this.mailService.sendMail({
         to: createEmailConfirmationDto.email,
-        from: 'osamakamelmohamed6@gmail.com',
+        from: 'latokalatohamato@gmail.com',
         subject: `Your Verfication Number`,
         text: `YOUR VERFICATION NUMBER IS ${generatedCode}`,
       });

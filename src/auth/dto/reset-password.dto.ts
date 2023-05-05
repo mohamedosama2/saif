@@ -2,8 +2,8 @@ import { IsNotEmpty, IsString, Matches } from 'class-validator';
 import { Constants } from 'src/utils/constants';
 export class ResetPasswordDto {
   @IsString()
-  @Matches(Constants.EMAIL_REGX, { message: 'email is invalid' })
-  email: string;
+  @Matches(Constants.PHONE_REGX, { message: 'phone is invalid' })
+  phone: string;
 
   @IsString()
   @IsNotEmpty()

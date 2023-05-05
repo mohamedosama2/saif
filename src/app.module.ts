@@ -14,13 +14,14 @@ import { ChangeStreamsModule } from './change-streams/change-streams.module';
 import { EmailConfirmationModule } from './email-confirmation/email-confirmation.module';
 import { HousesModule } from './houses/houses.module';
 import { ReservationsModule } from './reservations/reservations.module';
+import { PhoneConfirmationModule } from './phone-confirmation/phone-confirmation.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
     DatabaseModule,
     UsersModule,
     AuthModule,
-    EmailConfirmationModule,
+    PhoneConfirmationModule,
     HousesModule,
     ReservationsModule,
     /*  ChatModule,

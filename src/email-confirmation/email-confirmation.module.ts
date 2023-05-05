@@ -12,7 +12,7 @@ import { EmailConfirmationService } from './email-confirmation.service';
         host: 'smtp.sendgrid.net',
         auth: {
           user: 'apikey',
-          pass: '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',
+          pass: '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',
         },
         tls: {
           rejectUnauthorized: false,

@@ -31,9 +31,9 @@ export class AuthService {
 
   async register(registerationData: RegisterDto): Promise<StudentDocument> {
     let user = await this.userRepository.findOne({
-      email: registerationData.email,
+      phone: registerationData.phone,
     } as FilterQuery<UserDocument>);
-    if (user) throw new BadRequestException('email should be unique');
+    if (user) throw new BadRequestException('phone should be unique');
     // user = await this.userRepository.create({
     //   ...registerationData,
     //   role: 'student',
@@ -49,9 +49,9 @@ export class AuthService {
     user: UserDocument;
     token: string;
   }> {
-    const { email } = loginDto;
-    const user = await this.userRepository.findOne({
-      email,
+    const { phone } = loginDto;
+    let user = await this.userRepository.findOne({
+      phone,
     } as FilterQuery<UserDocument>);
     if (!user) throw new UserNotFoundException();
     if (!(await (user as any).isValidPassword(loginDto.password)))
