@@ -5,7 +5,6 @@ import { User } from 'src/users/models/_user.model';
 
 export type HouseDocument = House & mongoose.Document;
 
-
 @Schema({ timestamps: true })
 export class House {
   id?: string;
@@ -30,7 +29,7 @@ export class House {
   code: string;
   @Prop({ type: String, required: true })
   conditions: string;
-//change
+  //change
   @Prop({ type: Number, required: true })
   rooms: number;
   @Prop({ type: Number, required: true })
@@ -82,6 +81,9 @@ export class House {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: Reservation.name }],
   })
   reservations?: string[];
+
+  @Prop(Number)
+  rating?: number;
 }
 const HouseSchema = SchemaFactory.createForClass(House);
 export { HouseSchema };

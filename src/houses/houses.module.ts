@@ -9,6 +9,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UploadCloudinary } from 'src/utils/services/upload-cloudinary';
 import { ReservationsModule } from 'src/reservations/reservations.module';
+import { RateModule } from 'src/rate/rate.module';
 
 @Module({
   controllers: [HousesController],
@@ -27,6 +28,7 @@ import { ReservationsModule } from 'src/reservations/reservations.module';
       inject: [ConfigService],
     }),
     forwardRef(() => ReservationsModule),
+    forwardRef(() => RateModule),
   ],
   exports: [HousesService, HouseRepository],
 })

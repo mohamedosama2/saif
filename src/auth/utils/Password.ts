@@ -21,6 +21,6 @@ export class Password {
     password: string,
     hashed_password: string,
   ): Promise<boolean> {
-    return compare(password, hashed_password);
+    return compare(password.toString(), hashed_password.toString());
   }
 }

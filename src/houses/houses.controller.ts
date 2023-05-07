@@ -20,12 +20,19 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { FilterQueryOptionsHouse } from './dto/filterQueryOptions.dto';
 import { PaginateResult } from 'mongoose';
 import { HouseDocument } from './models/house.model';
+import { CreateRateDto } from 'src/rate/dto/create-rate.dto';
+import ParamsWithId from 'src/utils/paramsWithId.dto';
+import { RateService } from 'src/rate/rate.service';
+import { PaginationParams } from 'src/utils/pagination/paginationParams.dto';
 
 @Controller('houses')
 @ApiTags('houses')
 @ApiBearerAuth()
 export class HousesController {
-  constructor(private readonly housesService: HousesService) {}
+  constructor(
+    private readonly housesService: HousesService,
+    private readonly rateService: RateService,
+  ) {}
 
   @Post() //ADD IMAGES
   @UseInterceptors(
@@ -94,5 +101,22 @@ export class HousesController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.housesService.findOne(id);
+  }
+
+  @Post('/rate/:id')
+  async addRate(
+    @Body() createRateDto: CreateRateDto,
+    @Param() { id }: ParamsWithId,
+    @AuthUser() me: UserDocument,
+  ) {
+    return await this.rateService.create(createRateDto, 'houses', id, me._id);
+  }
+
+  @Get('/rates/:id')
+  async getAllRates(
+    @Param() { id }: ParamsWithId,
+    @Query() PaginationParams: PaginationParams,
+  ) {
+    return await this.rateService.fetchAllRates(PaginationParams, 'houses', id);
   }
 }

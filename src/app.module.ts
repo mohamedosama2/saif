@@ -15,6 +15,7 @@ import { EmailConfirmationModule } from './email-confirmation/email-confirmation
 import { HousesModule } from './houses/houses.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { PhoneConfirmationModule } from './phone-confirmation/phone-confirmation.module';
+import { RateModule } from './rate/rate.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -24,6 +25,7 @@ import { PhoneConfirmationModule } from './phone-confirmation/phone-confirmation
     PhoneConfirmationModule,
     HousesModule,
     ReservationsModule,
+    RateModule,
     /*  ChatModule,
     NotificationModule, */
     // ChangeStreamsModule,

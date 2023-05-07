@@ -53,6 +53,7 @@ export class AuthController {
     user: UserDocument;
     token: string;
   }> {
+      console.log(LoginDto)
     return await this.authService.login(LoginDto);
   }
 
