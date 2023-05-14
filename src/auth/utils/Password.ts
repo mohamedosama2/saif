@@ -6,7 +6,7 @@ export class Password {
    * @param password the password you want to hash
    */
   static hash(password: string): Promise<string> {
-    return hash(password, 10);
+    return hash(password.toString(), 10);
   }
 
   /**

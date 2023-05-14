@@ -39,6 +39,7 @@ export class AuthController {
   @Public()
   @Post('/signup')
   async register(@Body() RegisterDto: RegisterDto): Promise<StudentDocument> {
+    console.log('types', typeof RegisterDto.password);
     let user = await this.authService.register(RegisterDto);
     await this.phoneConfirmationService.sendSMS({
       phone: RegisterDto.phone,
@@ -53,7 +54,7 @@ export class AuthController {
     user: UserDocument;
     token: string;
   }> {
-      console.log(LoginDto)
+    console.log(LoginDto);
     return await this.authService.login(LoginDto);
   }
 
