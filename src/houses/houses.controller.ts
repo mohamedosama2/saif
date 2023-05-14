@@ -24,6 +24,7 @@ import { CreateRateDto } from 'src/rate/dto/create-rate.dto';
 import ParamsWithId from 'src/utils/paramsWithId.dto';
 import { RateService } from 'src/rate/rate.service';
 import { PaginationParams } from 'src/utils/pagination/paginationParams.dto';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('houses')
 @ApiTags('houses')
@@ -93,6 +94,7 @@ export class HousesController {
     return this.housesService.findAllCitiesHouses();
   }
 
+  @Public()
   @Get('/newest-houses')
   findNewestHouses() {
     return this.housesService.findNewestHouses();

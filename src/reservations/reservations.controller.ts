@@ -17,6 +17,7 @@ import { UserDocument } from 'src/users/models/_user.model';
 import { FilterQueryOptionsReservation } from './dto/filterQueryOptions.dto';
 import { PaginateResult } from 'mongoose';
 import { ReservationDocument } from './models/reservation.model';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('reservations')
 @ApiTags('Reservations')
@@ -65,9 +66,9 @@ export class ReservationsController {
     return this.reservationsService.findMyReservationsNotifications(me._id);
   }
 
+  @Public()
   @Get('/most-reserved')
   findMostReserved() {
     return this.reservationsService.findMostReserved();
   }
- 
 }
