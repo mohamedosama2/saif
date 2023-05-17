@@ -68,6 +68,10 @@ export class CreateHouseDto {
   @IsNotEmpty()
   apartment_area: string;
 
+  @IsString()
+  @IsNotEmpty()
+  description: string;
+
   @IsNumber()
   @IsNotEmpty()
   price: number;

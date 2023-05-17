@@ -84,6 +84,9 @@ export class House {
 
   @Prop(Number)
   rating?: number;
+
+  @Prop({ type: String, required: true })
+  description: string;
 }
 const HouseSchema = SchemaFactory.createForClass(House);
 export { HouseSchema };
