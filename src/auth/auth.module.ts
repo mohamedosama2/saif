@@ -26,7 +26,7 @@ import { JwtModule } from '@nestjs/jwt';
   controllers: [AuthController],
   providers: [
     AuthService,
- /*    GoogleOauthStrategy, */
+    GoogleOauthStrategy,
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: RolesGuard },
   ],
