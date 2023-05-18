@@ -21,6 +21,10 @@ export class ReservationsService {
     private readonly houseRepository: HouseRepository,
   ) {}
   async create(createReservationDto: CreateReservationDto) {
+    const isHouseExisted = await this.houseRepository.findOne({
+      _id: createReservationDto.house,
+    });
+    if (!isHouseExisted) throw new NotFoundException('this house not existed ');
     let isReserved = await this.reservationRepostary.findOne({
       house: createReservationDto.house,
       start_date: { $lte: createReservationDto.start_date },
