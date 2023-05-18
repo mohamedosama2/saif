@@ -55,6 +55,7 @@ export abstract class BaseAbstractRepository<T> {
       'page',
       'limit',
     ]);
+    console.log(filters)
     let docs;
     if (queryFiltersAndOptions.allowPagination) {
       docs = await (this.model as PaginateModel<TDocument<T>>).paginate(

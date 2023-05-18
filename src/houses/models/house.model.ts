@@ -85,6 +85,9 @@ export class House {
   @Prop(Number)
   rating?: number;
 
+  @Prop({ type: Number })
+  raters?: number;
+
   @Prop({ type: String, required: true })
   description: string;
 }

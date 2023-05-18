@@ -5,6 +5,7 @@ import { PaginationParams } from 'src/utils/pagination/paginationParams.dto';
 import { CreateRateDto } from './dto/create-rate.dto';
 import { RateRepository } from './rate.repository';
 import { HouseRepository } from 'src/houses/house.repository';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class RateService {
@@ -44,6 +45,7 @@ export class RateService {
 
     let rates = await this.rateRepository.fetchRates(ratedOne.id, subjectType);
     ratedOne['rating'] = rates[0]['final'];
+    ratedOne['raters'] = rates[0]['denominator'];
     await ratedOne.save();
     let response = prevRate ? prevRate : newRate;
 
@@ -56,10 +58,10 @@ export class RateService {
     id: string,
   ) {
     paginationParams['subjectType'] = subjectType;
-    paginationParams['id'] = id;
+    paginationParams['subject'] = new Types.ObjectId(id);
     return await this.rateRepository.findAllWithPaginationOption(
       paginationParams,
-      ['subjectType', 'id'],
+      ['subjectType', 'subject'],
       { sort: '-createdAt' },
     );
   }
