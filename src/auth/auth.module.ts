@@ -9,11 +9,13 @@ import { RolesGuard } from './guards/roles.guard';
 import { GoogleOauthStrategy } from './strategies/googleStrategy.passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { StripeModule } from 'src/stripe/stripe.module';
 
 @Module({
   imports: [
     UsersModule,
     PhoneConfirmationModule,
+    StripeModule,
     ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

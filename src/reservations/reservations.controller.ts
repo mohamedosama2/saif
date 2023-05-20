@@ -31,6 +31,7 @@ export class ReservationsController {
     @AuthUser() me: UserDocument,
   ) {
     createReservationDto.user = me._id;
+    createReservationDto.stripeCustomerId = me.stripeCustomerId;
     return this.reservationsService.create(createReservationDto);
   }
 

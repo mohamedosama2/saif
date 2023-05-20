@@ -16,6 +16,7 @@ import { HousesModule } from './houses/houses.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { PhoneConfirmationModule } from './phone-confirmation/phone-confirmation.module';
 import { RateModule } from './rate/rate.module';
+import { StripeModule } from './stripe/stripe.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -26,6 +27,7 @@ import { RateModule } from './rate/rate.module';
     HousesModule,
     ReservationsModule,
     RateModule,
+    StripeModule,
     /*  ChatModule,
     NotificationModule, */
     // ChangeStreamsModule,

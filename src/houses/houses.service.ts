@@ -123,7 +123,7 @@ export class HousesService {
   }
 
   async findOne(id: string) {
-    return await this.houseRepositary.findOne({ id });
+    return await this.houseRepositary.findOne({ _id: id });
   }
 
   async findAllCitiesHouses() {

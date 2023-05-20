@@ -20,6 +20,7 @@ import { JwtService } from '@nestjs/jwt';
 import { StudentDocument } from 'src/users/models/student.model';
 import { CreateQuery, FilterQuery } from 'mongoose';
 import { UserRepository } from 'src/users/users.repository';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Injectable()
 export class AuthService {
@@ -27,6 +28,7 @@ export class AuthService {
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
+    private stripeService: StripeService,
   ) {}
 
   async register(registerationData: RegisterDto): Promise<StudentDocument> {
@@ -38,9 +40,15 @@ export class AuthService {
     //   ...registerationData,
     //   role: 'student',
     // } as CreateQuery<UserDocument>);
+    const stripeCustomer = await this.stripeService.createCustomer(
+      registerationData.username,
+      registerationData.phone,
+    );
+
     user = await this.userRepository.createDoc({
       ...registerationData,
       role: 'student',
+      stripeCustomerId: stripeCustomer.id,
     } as User);
     return user;
   }
@@ -84,13 +92,19 @@ export class AuthService {
       facebookId: id,
     } as FilterQuery<UserDocument>);
     if (!user) {
+      const stripeCustomer = await this.stripeService.createCustomer(
+        name,
+        email,
+      );
       user = await this.userRepository.create({
         username: name,
         email,
         facebookId: id,
         role: 'student',
+        stripeCustomerId: stripeCustomer.id,
       } as CreateQuery<UserDocument>);
     }
+
     return user;
   }
 

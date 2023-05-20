@@ -10,6 +10,7 @@ import {
   ReservationNotificationSchema,
 } from './models/reservationNotification.model';
 import { ReservationNotificationRepository } from './repositaries/reservationsNotifications.repository';
+import { StripeModule } from 'src/stripe/stripe.module';
 
 @Module({
   controllers: [ReservationsController],
@@ -30,6 +31,7 @@ import { ReservationNotificationRepository } from './repositaries/reservationsNo
       },
     ]),
     forwardRef(() => HousesModule),
+    StripeModule,
   ],
   exports: [ReservationsService],
 })

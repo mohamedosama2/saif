@@ -1,4 +1,11 @@
-import { IsDate, IsEnum, IsMongoId, IsNumber } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsMongoId,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 import { PAYMENT_METHOD } from '../models/reservation.model';
 import { ApiHideProperty } from '@nestjs/swagger';
 
@@ -15,9 +22,16 @@ export class CreateReservationDto {
   @ApiHideProperty()
   user: string;
 
-  @IsMongoId()
-  house: string;
+  @ApiHideProperty()
+  stripeCustomerId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  paymentMethodId: string;
 
   @IsNumber()
   price: number;
+
+  @IsMongoId()
+  house: string;
 }

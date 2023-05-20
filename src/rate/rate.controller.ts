@@ -18,9 +18,8 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class RateController {
   constructor(private readonly rateService: RateService) {}
 
-/*   @Post()
+  /*   @Post()
   create(@Body() createRateDto: CreateRateDto) {
     return this.rateService.create(createRateDto);
   } */
-
 }

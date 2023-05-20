@@ -115,6 +115,9 @@ export class User {
     ]),
   )
   pushTokens: PushToken[];
+
+  @Prop(String)
+  stripeCustomerId?: string;
 }
 
 const UserSchema = SchemaFactory.createForClass(User);

@@ -12,6 +12,7 @@ import { ApiNotFoundResponse } from '@nestjs/swagger';
 import { ReservationNotificationRepository } from './repositaries/reservationsNotifications.repository';
 import { IS_RESERVED, ReservationDocument } from './models/reservation.model';
 import { HouseDocument } from 'src/houses/models/house.model';
+import { StripeService } from 'src/stripe/stripe.service';
 
 @Injectable()
 export class ReservationsService {
@@ -19,17 +20,36 @@ export class ReservationsService {
     private readonly reservationRepostary: ReservationRepository,
     private readonly reservationNotificationRepository: ReservationNotificationRepository,
     private readonly houseRepository: HouseRepository,
+    private readonly stripeService: StripeService,
   ) {}
   async create(createReservationDto: CreateReservationDto) {
+    // is house existed
     const isHouseExisted = await this.houseRepository.findOne({
       _id: createReservationDto.house,
     });
     if (!isHouseExisted) throw new NotFoundException('this house not existed ');
+    //////////////////// is reserved
     let isReserved = await this.reservationRepostary.findOne({
       house: createReservationDto.house,
-      start_date: { $lte: createReservationDto.start_date },
-      end_date: { $gte: createReservationDto.start_date },
+      $or: [
+        {
+          start_date: { $lte: createReservationDto.start_date },
+          end_date: { $gte: createReservationDto.start_date },
+        },
+        {
+          start_date: { $lte: createReservationDto.end_date },
+          end_date: { $gte: createReservationDto.end_date },
+        },
+      ],
+      /*  start_date: { $lte: createReservationDto.start_date },
+      end_date: { $gte: createReservationDto.start_date }, */
     });
+
+ /*    await this.stripeService.charge(
+      createReservationDto.price,
+      createReservationDto.paymentMethodId,
+      createReservationDto.stripeCustomerId,
+    ); */
 
     if (isReserved) {
       return await this.reservationRepostary.create({

@@ -16,6 +16,7 @@ import { UploadCloudinary } from 'src/utils/services/upload-cloudinary';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserRepository } from './users.repository';
 import { cacheOperationsModule } from 'src/cache/cache.module';
+import { StripeModule } from 'src/stripe/stripe.module';
 
 @Module({
   imports: [
