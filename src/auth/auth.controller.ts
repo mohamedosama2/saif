@@ -26,6 +26,11 @@ import { FilterQuery } from 'mongoose';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserRepository } from 'src/users/users.repository';
 
+export interface GoogleResponse {
+  user: UserDocument;
+  token: string;
+}
+
 @ApiTags('AUTH')
 @Controller('auth')
 export class AuthController {
@@ -63,7 +68,7 @@ export class AuthController {
   @Post('/login-googel')
   async loginGoogle(
     @Body() _loginGoogleData: LoginGoogleDto,
-  ): Promise<UserDocument> {
+  ): Promise<GoogleResponse> {
     return await this.authService.loginGoogle(this.req.me as UserDocument);
   }
 
