@@ -82,6 +82,7 @@ export class AuthService {
       userId: user.id,
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, options);
+    user.phone = '';
     const response = { token, user };
     return response;
   }

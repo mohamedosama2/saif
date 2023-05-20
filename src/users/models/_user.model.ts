@@ -83,7 +83,17 @@ export class User {
   @Prop({ default: false, type: Boolean })
   enabled: boolean;
 
-  @Prop({ type: String })
+  @Prop({ type: String, default: '' })
+  address?: string;
+
+  @Prop({ type: Date, default: new Date().toJSON() })
+  birthdate?: string;
+
+  @Prop({
+    type: String,
+    default:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/480px-Default_pfp.svg.png',
+  })
   photo: string;
 
   @Prop({ index: true, unique: true, sparse: true, type: String })

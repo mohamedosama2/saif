@@ -75,7 +75,11 @@ export class UsersController {
     files,
     @Body() updateUserData: UpdateUserDto,
   ): Promise<UserDocument> {
-    if (files && files.photo) updateUserData.photo = files.photo[0].secure_url;
+    if (files && files.photo) {
+      updateUserData.photo = files.photo[0].secure_url;
+    } else {
+      delete updateUserData.photo;
+    }
 
     delete updateUserData.enabled;
 

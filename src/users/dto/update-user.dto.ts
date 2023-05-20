@@ -1,4 +1,11 @@
-import { IsBoolean, IsMongoId, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsMongoId,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateUserDto {
@@ -13,12 +20,20 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
-  password?: string;
+  username?: string;
 
+  @IsString()
+  @IsOptional()
+  address?: string;
+
+  @IsOptional()
+  birthdate?: string;
 
   @IsString()
   @IsOptional()
   code?: string;
-
-  
 }
+
+/*   @IsString()
+  @IsOptional()
+  password?: string;*/
