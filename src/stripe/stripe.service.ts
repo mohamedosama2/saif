@@ -17,6 +17,12 @@ export class StripeService {
       phone,
     });
   }
+  public async createCustomerEmail(name: string, email: string) {
+    return this.stripe.customers.create({
+      name,
+      email,
+    });
+  }
 
   public async charge(
     amount: number,

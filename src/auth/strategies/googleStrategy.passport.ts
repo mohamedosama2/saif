@@ -33,7 +33,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
     } as FilterQuery<UserDocument>);
 
     if (!user) {
-      const stripeCustomer = await this.stripeService.createCustomer(
+      const stripeCustomer = await this.stripeService.createCustomerEmail(
         displayName,
         emails[0].value,
       );
@@ -43,7 +43,7 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
         photo: _json.picture,
         googleId: id,
         role: 'student',
-        stripeCustomerId: stripeCustomer.id,
+        /*    stripeCustomerId: stripeCustomer.id, */
       } as CreateQuery<UserDocument>);
     }
     req.me = user;
