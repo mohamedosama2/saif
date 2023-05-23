@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { House } from 'src/houses/models/house.model';
 import { User } from 'src/users/models/_user.model';
+import { Reservation } from './reservation.model';
 
 export type ReservationNotificationDocument = ReservationNotification &
   mongoose.Document;
@@ -32,6 +33,13 @@ export class ReservationNotification {
 
   @Prop({ type: String, required: true })
   event: string;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User.name,
+    required: true,
+  })
+  customer: string;
 }
 const ReservationNotificationSchema = SchemaFactory.createForClass(
   ReservationNotification,

@@ -1,6 +1,7 @@
 import {
   Injectable,
   BadRequestException,
+  ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
@@ -45,7 +46,7 @@ export class ReservationsService {
       end_date: { $gte: createReservationDto.start_date }, */
     });
 
- /*    await this.stripeService.charge(
+    /*    await this.stripeService.charge(
       createReservationDto.price,
       createReservationDto.paymentMethodId,
       createReservationDto.stripeCustomerId,
@@ -78,6 +79,7 @@ export class ReservationsService {
       owner: house.owner,
       house: createReservationDto.house,
       event: 'NEW RESERVATION',
+      customer: createReservationDto.user,
     });
 
     return reservation;
@@ -111,17 +113,24 @@ export class ReservationsService {
         owner: owner,
         house: existedReservation.house,
         event: 'NEW RESERVATION',
+        customer: existedReservation.user,
       });
     }
   }
 
   // still case of sel waiting reservation
 
-  async removeReservation(reservationId: string) {
+  async removeReservation(reservationId: string, userId: string) {
+    //////////// check if i the one who made the reservation DONE!!!
+    //////////// save the one who reserve
+
     let reservation = await this.reservationRepostary.findOne({
       _id: reservationId,
     });
+
     if (!reservation) throw new NotFoundException('not found this reservation');
+    if (reservation.user !== userId)
+      throw new ForbiddenException(`cannot delete this reservation `);
     if (reservation.isReserved === IS_RESERVED.WAITING) {
       return await this.reservationRepostary.deleteOne({ _id: reservationId });
     }
@@ -143,6 +152,7 @@ export class ReservationsService {
       owner: house.owner,
       house: house._id,
       event: 'DELETED RESERVATION',
+      customer: userId,
     });
     await this.hasWaitingReservation(reservation, house.owner);
 

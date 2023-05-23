@@ -13,7 +13,7 @@ import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthUser } from 'src/auth/decorators/me.decorator';
-import { UserDocument } from 'src/users/models/_user.model';
+import { User, UserDocument } from 'src/users/models/_user.model';
 import { FilterQueryOptionsReservation } from './dto/filterQueryOptions.dto';
 import { PaginateResult } from 'mongoose';
 import { ReservationDocument } from './models/reservation.model';
@@ -58,8 +58,8 @@ export class ReservationsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reservationsService.removeReservation(id);
+  remove(@Param('id') id: string, @AuthUser() me: User) {
+    return this.reservationsService.removeReservation(id, me.id);
   }
 
   @Get('my-notifications')

@@ -19,6 +19,7 @@ export class ReservationNotificationRepository extends BaseAbstractRepository<Re
   async findMyReservationsNotifications(me: string) {
     return await this.reservationNotificationModel
       .find({ owner: me })
-      .populate({ path: 'house', select: 'name about price' });
+      .populate({ path: 'house', select: 'name about price' })
+      .populate({ path: 'customer' });
   }
 }
