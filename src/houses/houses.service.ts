@@ -29,8 +29,8 @@ export class HousesService {
   }
   async findAllMyFavourites(me: string) {
     let myFavourites = await this.houseRepositary.findAllMyFavourites(me);
-    if (myFavourites.length === 0)
-      throw new NotFoundException('no Favourites yet');
+  /*   if (myFavourites.length === 0)
+      throw new NotFoundException('no Favourites yet'); */
     return myFavourites;
   }
 

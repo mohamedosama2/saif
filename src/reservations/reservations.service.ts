@@ -169,8 +169,8 @@ export class ReservationsService {
 
   async findMyReservations(id: string) {
     let myReservations = await this.reservationRepostary.myReservations(id);
-    if (myReservations.length === 0)
-      throw new NotFoundException('NO Reservation Yet ');
+/*     if (myReservations.length === 0)
+      throw new NotFoundException('NO Reservation Yet '); */
     return myReservations;
   }
   async allReservationsOfHouse(id: string) {
