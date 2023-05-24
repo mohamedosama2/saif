@@ -169,7 +169,7 @@ export class ReservationsService {
 
   async findMyReservations(id: string) {
     let myReservations = await this.reservationRepostary.myReservations(id);
-/*     if (myReservations.length === 0)
+    /*     if (myReservations.length === 0)
       throw new NotFoundException('NO Reservation Yet '); */
     return myReservations;
   }
@@ -177,8 +177,8 @@ export class ReservationsService {
     let allReservations = await this.reservationRepostary.allReservationOfHouse(
       id,
     );
-    if (allReservations.length === 0)
-      throw new NotFoundException('NO Reservation For this house ');
+    /*     if (allReservations.length === 0)
+      throw new NotFoundException('NO Reservation For this house '); */
     return allReservations;
   }
 
